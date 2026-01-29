@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menu Digital Prestige</title>
+    <style>
+        /* DESIGN GLOBAL LUXE */
+        body { 
+            font-family: 'Arial', sans-serif; 
+            background-color: #0a0a0a; 
+            color: #ffffff; 
+            text-align: center; 
+            margin: 0; 
+            padding: 0;
+            overflow-x: hidden;
+        }
+
+        .container { 
+            max-width: 600px; 
+            margin: auto; 
+            padding: 20px 10px 100px 10px; 
+        }
+
+        h2 { 
+            color: #d4af37; 
+            text-transform: uppercase; 
+            letter-spacing: 2px;
+            margin-bottom: 20px;
+            font-size: 1.2rem;
+        }
+
+        /* CADRE DE L'IMAGE */
+        .menu-frame { 
+            width: 100%; 
+            min-height: 450px; 
+            background: #1a1a1a; 
+            border-radius: 15px; 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+            border: 1px solid #222;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        img { 
+            width: 100%; 
+            height: auto;
+            display: block;
+        }
+
+        /* BARRE DE NAVIGATION FIXE EN BAS */
+        .nav-bar { 
+            position: fixed; 
+            bottom: 0; 
+            left: 0; 
+            right: 0; 
+            background: rgba(15, 15, 15, 0.95); 
+            padding: 15px; 
+            display: flex; 
+            justify-content: space-around; 
+            align-items: center; 
+            border-top: 1px solid #d4af37; 
+            backdrop-filter: blur(10px); 
+            z-index: 1000; 
+        }
+
+        button { 
+            background: #d4af37; 
+            color: #000; 
+            border: none; 
+            padding: 12px 15px; 
+            border-radius: 8px; 
+            font-weight: bold; 
+            font-size: 14px; 
+            cursor: pointer; 
+            transition: 0.3s;
+            min-width: 90px;
+        }
+
+        button:active { transform: scale(0.95); }
+
+        button:disabled { 
+            background: #333; 
+            color: #666; 
+            cursor: not-allowed; 
+        }
+
+        .home-btn { background: #f1f1f1; }
+
+        #page-info { 
+            font-size: 16px; 
+            font-weight: bold; 
+            color: #d4af37; 
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Notre Carte</h2>
+    
+    <div class="menu-frame">
+        <img id="image-active" src="page1.PNG" alt="Chargement du menu...">
+    </div>
+
+    <div class="nav-bar">
+        <button class="home-btn" onclick="allerAccueil()">🏠 Début</button>
+        <button id="btn-prev" onclick="imagePrecedente()" disabled>Précédent</button>
+        <div id="page-info">1 / 12</div>
+        <button id="btn-next" onclick="imageSuivante()">Suivant</button>
+    </div>
+</div>
+
+<script>
+    // 1. LISTE DES 12 IMAGES (Extension .PNG respectée)
+    const images = [
+        "page1.PNG", "page2.PNG", "page3.PNG", "page4.PNG", 
+        "page5.PNG", "page6.PNG", "page7.PNG", "page8.PNG",
+        "page9.PNG", "page10.PNG", "page11.PNG", "page12.PNG"
+    ];
+    
+    // 2. PRÉCHARGEMENT POUR ÉLIMINER LE RETARD
+    images.forEach((src) => {
+        const preloader = new Image();
+        preloader.src = src;
+    });
+
+    let currentIndex = 0;
+
+    const imgElement = document.getElementById("image-active");
+    const infoElement = document.getElementById("page-info");
+    const btnPrev = document.getElementById("btn-prev");
+    const btnNext = document.getElementById("btn-next");
+
+    // 3. FONCTION DE MISE À JOUR
+    function updateMenu() {
+        imgElement.src = images[currentIndex];
+        infoElement.innerText = `${currentIndex + 1} / ${images.length}`;
+
+        // Désactivation intelligente des boutons
+        btnPrev.disabled = (currentIndex === 0);
+        btnNext.disabled = (currentIndex === images.length - 1);
+        
+        // Remonte en haut pour mobile si l'image est longue
+        window.scrollTo({top: 0, behavior: 'smooth'});
+    }
+
+    function imageSuivante() {
+        if (currentIndex < images.length - 1) {
+            currentIndex++;
+            updateMenu();
+        }
+    }
+
+    function imagePrecedente() {
+        if (currentIndex > 0) {
+            currentIndex--;
+            updateMenu();
+        }
+    }
+
+    function allerAccueil() {
+        currentIndex = 0;
+        updateMenu();
+    }
+</script>
+
+</body>
+</html>
