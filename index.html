@@ -31,7 +31,6 @@
         .ticker {
             display: inline-block;
             white-space: nowrap;
-            /* Animation ralentie à 40s pour une lecture facile */
             animation: ticker 40s linear infinite;
             color: #000;
             font-weight: bold;
@@ -47,7 +46,7 @@
         .container { 
             max-width: 600px; 
             margin: auto; 
-            padding: 80px 10px 100px 10px; 
+            padding: 80px 10px 180px 10px; /* Augmenté pour laisser place au bouton TikTok */
         }
 
         h2 { 
@@ -78,13 +77,49 @@
             left: 0; 
             right: 0; 
             background: rgba(15, 15, 15, 0.95); 
-            padding: 15px; 
-            display: flex; 
-            justify-content: space-around; 
-            align-items: center; 
+            padding: 15px 15px 30px 15px; 
             border-top: 1px solid #d4af37; 
             backdrop-filter: blur(10px); 
             z-index: 1000; 
+        }
+
+        /* STYLE DU BOUTON TIKTOK */
+        .tiktok-section {
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .tiktok-btn {
+            text-decoration: none;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 5px;
+            transition: transform 0.3s;
+        }
+
+        .tiktok-btn:active { transform: scale(0.9); }
+
+        .tiktok-icon {
+            width: 35px;
+            height: 35px;
+            /* Filtre pour rendre l'icône dorée */
+            filter: invert(72%) sepia(50%) saturate(464%) hue-rotate(11deg) brightness(93%) contrast(88%);
+        }
+
+        .tiktok-text {
+            color: #d4af37;
+            font-size: 10px;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+
+        /* BOUTONS DE NAVIGATION */
+        .nav-buttons {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
         }
 
         button { 
@@ -106,7 +141,7 @@
 </head>
 <body>
 
-<!-- BANDEAU DÉFILANT DOUX -->
+<!-- BANDEAU DÉFILANT -->
 <div class="ticker-wrap">
     <div class="ticker">
         🍴 ICLASS LOUNGE BAR / RESTAURANT AFRICAIN — 📍 Av. Kamalondo N°4, C/Lubumbashi — 📞 RESERVATIONS : +243 838 091 004
@@ -122,11 +157,23 @@
         <img id="image-active" src="page1.png" alt="Chargement...">
     </div>
 
+    <!-- NAVIGATION BAS DE PAGE -->
     <div class="nav-bar">
-        <button class="home-btn" onclick="allerAccueil()">🏠 Début</button>
-        <button id="btn-prev" onclick="imagePrecedente()" disabled>Précédent</button>
-        <div id="page-info">1 / 12</div>
-        <button id="btn-next" onclick="imageSuivante()">Suivant</button>
+        
+        <!-- SECTION TIKTOK ICLASS -->
+        <div class="tiktok-section">
+            <a href="https://www.tiktok.com" target="_blank" class="tiktok-btn">
+                <img src="https://cdn-icons-png.flaticon.com" class="tiktok-icon" alt="TikTok">
+                <span class="tiktok-text">SUIVEZ-NOUS SUR TIKTOK</span>
+            </a>
+        </div>
+
+        <div class="nav-buttons">
+            <button class="home-btn" onclick="allerAccueil()">🏠 Début</button>
+            <button id="btn-prev" onclick="imagePrecedente()" disabled>Précédent</button>
+            <div id="page-info">1 / 12</div>
+            <button id="btn-next" onclick="imageSuivante()">Suivant</button>
+        </div>
     </div>
 </div>
 
@@ -137,7 +184,7 @@
         "page9.png", "page10.png", "page11.png", "page12.png"
     ];
     
-    // Préchargement
+    // Préchargement des images pour éviter la latence
     images.forEach((src) => {
         const preloader = new Image();
         preloader.src = src;
@@ -154,14 +201,30 @@
         infoElement.innerText = `${currentIndex + 1} / ${images.length}`;
         btnPrev.disabled = (currentIndex === 0);
         btnNext.disabled = (currentIndex === images.length - 1);
+        
+        // Remonte automatiquement en haut du menu pour une meilleure lecture
         window.scrollTo({top: 0, behavior: 'smooth'});
     }
 
-    function imageSuivante() { if (currentIndex < images.length - 1) { currentIndex++; updateMenu(); } }
-    function imagePrecedente() { if (currentIndex > 0) { currentIndex--; updateMenu(); } }
-    function allerAccueil() { currentIndex = 0; updateMenu(); }
+    function imageSuivante() { 
+        if (currentIndex < images.length - 1) { 
+            currentIndex++; 
+            updateMenu(); 
+        } 
+    }
+    
+    function imagePrecedente() { 
+        if (currentIndex > 0) { 
+            currentIndex--; 
+            updateMenu(); 
+        } 
+    }
+    
+    function allerAccueil() { 
+        currentIndex = 0; 
+        updateMenu(); 
+    }
 </script>
 
 </body>
 </html>
-
